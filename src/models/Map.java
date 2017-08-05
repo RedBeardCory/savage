@@ -28,6 +28,16 @@ public class Map {
 	 * the first valude of the array will be the width and the second will be the height
 	 */
 	private Biome map[][];
+
+	/**
+	 * the number of neighboring cells of water before land turns to water
+	 */
+	private int drownCell = 3;
+
+	/**
+	 * the number of cells before water turns to land
+	 */
+	private int saveCell = 4;
 	
 	/**
 	 * Creates the MapGen object.
@@ -104,8 +114,60 @@ public class Map {
 				// get the neighbor count
 				int neighbors = this.countAlive(map, x, y);
 				
+				// decide if the cell should die or be born
+				if(map[x][y] == Biome.LAND) {
+					// cell is land currently
+					if(neighbors < this.drownCell) {
+						// turn it into water
+						tempMap[x][y] = Biome.WATER;
+					}
+				}else {
+					// cell is water currently
+					if(neighbors > this.saveCell) {
+						// turn it into land
+						tempMap[x][y] = Biome.LAND;
+					}
+				}
 			}
 		}
+		
+		// after all that then change the map to the tempMap
+		map = tempMap;
+		
+	}
+	
+	/**
+	 * This function steps through generations of the map according to the rules
+	 * Similar to conways game of life
+	 */
+	public void generation() {
+		// first create a copy of the map to edit
+		Biome[][] tempMap = this.map;
+		
+		// loop over the map
+		for(int x = 0; x < this.width; x++) {
+			for(int y = 0; y < this.height; y++) {
+				// get the neighbor count
+				int neighbors = this.countAlive(this.map, x, y);
+				
+				// decide if the cell should die or be born
+				if(this.map[x][y] == Biome.LAND) {
+					// cell is land currently
+					if(neighbors < this.drownCell) {
+						// turn it into water
+						tempMap[x][y] = Biome.WATER;
+					}
+				}else {
+					// cell is water currently
+					if(neighbors > this.saveCell) {
+						// turn it into land
+						tempMap[x][y] = Biome.LAND;
+					}
+				}
+			}
+		}
+		
+		this.map = tempMap;
 		
 	}
 	
@@ -114,7 +176,7 @@ public class Map {
 	 * @param map the map to use
 	 * @param x the x coordinate
 	 * @param y the y coordinate
-	 * @return int count of neighbors
+	 * @return int count of neighbors that are LAND
 	 */
 	public int countAlive(Biome[][] map, int x, int y) {
 		int count = 0;
@@ -131,7 +193,7 @@ public class Map {
 				}else if(nX < 0 || nY < 0 || nX >= this.width || nY >= this.height) {
 					// the neighbor is off the map
 					
-				}else if(map[nX][nY] == Biome.WATER) {
+				}else if(map[nX][nY] == Biome.LAND) {
 					// then the count should be incremented
 					count++;
 				}
