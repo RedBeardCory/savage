@@ -6,7 +6,7 @@ package models;
  */
 public enum Biome {
 	OBLIVION('0'), 
-	WATER(' '), 
+	WATER('W'), 
 	LAND('#');
 	
 	/**

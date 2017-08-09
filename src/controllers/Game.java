@@ -1,7 +1,5 @@
 package controllers;
 
-import models.Map;
-
 public class Game {
 
 	public static void main(String[] args) {

@@ -1,18 +1,23 @@
-package models;
+package controllers;
+
+import models.Biome;
+import models.LargeMap;
 
 /**
  * Class for all map functions and handling of the map things
+ * 
+ * This class will build a map using the three different types of maps
  *
  */
 public class Map {
 	
 	/**
-	 * hieght of total map
+	 * height of total map in tiles
 	 */
 	private int height;
 	
 	/**
-	 * width of total map
+	 * width of total map in tiles
 	 */
 	private int width;
 	
@@ -22,12 +27,14 @@ public class Map {
 	 */
 	private double chance = 0.45;
 	
+	private LargeMap mainMap;
+	
 	
 	/**
 	 * the map variable itself
 	 * the first valude of the array will be the width and the second will be the height
 	 */
-	private Biome map[][];
+	private Biome[][] map;
 
 	/**
 	 * the number of neighboring cells of water before land turns to water
